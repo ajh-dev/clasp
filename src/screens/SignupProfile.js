@@ -23,7 +23,7 @@ const reducer = (state, action) => {
     }
 }
 
-const SignupProfile = () => {
+const SignupProfile = ({ navigation }) => {
     const healthConditions = [
         {label: 'cancer', value: 'cancer'},
         {label: 'diabetes', value: 'diabetes'}
@@ -59,7 +59,7 @@ const SignupProfile = () => {
             {state.image.value ? 
                 <Image source={{ uri: state.image.value }} style={styles.profilePic} /> 
             : null}
-            <SubmitButton />
+            <SubmitButton navigation={ navigation }/>
         </View>
     )
 };
