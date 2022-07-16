@@ -7,6 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 
+
 const UserInput = ({ inputName, onInputChange, type, optionalStatus, pickerOptions, curPicker }) => {
 
     const pickImage = async () => {

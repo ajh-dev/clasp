@@ -26,7 +26,7 @@ const reducer = (state, action) => {
     }
 }
 
-const SignupProfile = () => {
+const SignupProfile = ({ navigation }) => {
     const profileContext = useContext(UserContext);
 
     const healthConditions = [
@@ -76,7 +76,7 @@ const SignupProfile = () => {
             {state.image.value ? 
                 <Image source={{ uri: state.image.value }} style={styles.profilePic} /> 
             : null}
-            <SubmitButton onSubmit={submitUserData}/>
+            <SubmitButton navigation={ navigation }/>
             {profileContext.state.errorMessage ? Alert.alert(profileContext.state.errorMessage) : null}
         </View>
     )
