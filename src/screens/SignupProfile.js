@@ -63,7 +63,8 @@ const SignupProfile = ({ navigation }) => {
             <Text style={styles.title}>create profile</Text>
             {Object.entries(state).map(([key, value]) => {
                 return (
-                    <UserInput 
+                    <UserInput
+                        key={key} 
                         inputName={key}
                         onInputChange={newInput => dispatch({type: 'change_' + key, payload: newInput})}
                         type={value.type}
@@ -76,7 +77,7 @@ const SignupProfile = ({ navigation }) => {
             {state.image.value ? 
                 <Image source={{ uri: state.image.value }} style={styles.profilePic} /> 
             : null}
-            <SubmitButton navigation={ navigation }/>
+            <SubmitButton onSubmit={ submitUserData } navigation={ navigation }/>
             {profileContext.state.errorMessage ? Alert.alert(profileContext.state.errorMessage) : null}
         </View>
     )

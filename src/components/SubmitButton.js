@@ -5,9 +5,12 @@ import {
 } from "@expo-google-fonts/arvo";
 
 
-const SubmitButton = ({ navigation }) => {
+const SubmitButton = ({ navigation, onSubmit }) => {
     return (
-        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity style={styles.submitButton} onPress={() => {
+            onSubmit();
+            navigation.navigate('Profile')
+        }}>
             <Text style={styles.submitText}>continue</Text>
         </TouchableOpacity>
     );

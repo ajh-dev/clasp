@@ -11,6 +11,8 @@ const userReducer = (state, action) => {
             return {errorMessage: '', token: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: ''};
+        case 'create_user_id':
+            return {errorMessage: '', token: action.payload.token, userCode: action.payload.userCode};
         default:
             return state;
     }
@@ -26,7 +28,7 @@ const localSignin = dispatch => async () => {
 
 const createUser = dispatch => async (userInfo) => {
     try {
-        const response = await claspApi.post('/createuser', userInfo);
+        const response = await claspApi.post('/createuserprofile', userInfo);
         await AsyncStorage.setItem('@api_token', response.data.token);
         dispatch({ type: 'create_user', payload: response.data.token});
         dispatch({ type: 'clear_error_message' });
@@ -35,5 +37,17 @@ const createUser = dispatch => async (userInfo) => {
     }
 };
 
+const createUserID = dispatch => async (userInfo) => {
+    try {
+        const response = await claspApi.post('/createuserid', userInfo);
+        await AsyncStorage.setItem('@api_token', response.data.token);
+        dispatch({type: 'create_user_id', payload: response.data});
+        dispatch({type: 'clear_error_message'});
+    } catch (err) {
+        dispatch({ type: 'add_error', payload: "Something went wrong with signup"});
+         console.log(err.message);
+    }
+}
 
-export const { Provider, Context } = createDataContext(userReducer, { createUser, localSignin }, {token: null, errorMessage: ''});
+
+export const { Provider, Context } = createDataContext(userReducer, { createUser, localSignin, createUserID }, {userCode: null, token: null, errorMessage: ''});

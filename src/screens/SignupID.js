@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import {
     Arvo_400Regular,
 } from "@expo-google-fonts/arvo";
 import UserInput from '../components/UserInput';
 import SubmitButton from '../components/SubmitButton';
+import { Context as UserContext } from '../context/userContext';
 
 const SignupID = ({ navigation }) => {
-    const userID = (Math.random() + 1).toString(36).substring(7);
+    const profileContext = useContext(UserContext);
     const [healthCondition, setHealthCondition] = useState('');
+
+    const submitUserData = () => {
+        let data = {
+            conditions: [healthCondition]
+        };
+        console.log(data);
+    
+        profileContext.createUserID(JSON.parse(JSON.stringify(data)));
+    }
 
     const healthConditions = [
         {label: 'cancer', value: 'cancer'},
@@ -18,7 +28,6 @@ const SignupID = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{"Here's all you\nneed to login!"}</Text>
-            <Text style={styles.subheader}>user ID: {userID}</Text>
             <View style={styles.dropdown}>
                 <UserInput
                     inputName='condition'
@@ -29,7 +38,8 @@ const SignupID = ({ navigation }) => {
                     curPicker={healthCondition}
                 />
             </View>
-            <SubmitButton />
+            {profileContext.state.userCode ? Alert.alert(profileContext.state.userCode) : null}
+            <SubmitButton navigation={ navigation } onSubmit={ submitUserData }/>
         </View>
     );
 };

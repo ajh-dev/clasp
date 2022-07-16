@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     conditions: {
-        type: Array
+        type: Array,
+        required: true
     },
     img:{
         type: String
@@ -19,7 +20,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
 });
 

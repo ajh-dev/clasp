@@ -13,20 +13,22 @@ const Stack = createNativeStackNavigator();
 function App() {
   
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="InitialLoad" 
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen name="InitialLoad" component={InitialLoad} />
-        <Stack.Screen name="Startup" component={Startup} />
-        <Stack.Screen name="SignupProfile" component={SignupProfile} />
-        <Stack.Screen name="SignupID" component={SignupID} />
-        <Stack.Screen name="Profile" component={Profile} /> 
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName="InitialLoad" 
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <Stack.Screen name="InitialLoad" component={InitialLoad} />
+          <Stack.Screen name="Startup" component={Startup} />
+          <Stack.Screen name="SignupProfile" component={SignupProfile} />
+          <Stack.Screen name="SignupID" component={SignupID} />
+          <Stack.Screen name="Profile" component={Profile} /> 
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   )
 }
 

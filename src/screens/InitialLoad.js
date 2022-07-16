@@ -7,7 +7,7 @@ const InitialLoad = ({ navigation }) => {
     useEffect( () => {
         localSignin();
 
-        if(state.token){
+        if(state.token === null){
             navigation.navigate('Startup');
         } else {
             //FIXME: Set to home directory
