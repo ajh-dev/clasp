@@ -1,17 +1,20 @@
-import React, { useEffect, useReducer } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, { useContext, useReducer } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import UserInput from "../components/UserInput";
 import {
     Arvo_400Regular,
 } from "@expo-google-fonts/arvo";
 import SubmitButton from "../components/SubmitButton";
+import { Context as UserContext } from '../context/userContext';
+import { findFocusedRoute } from "@react-navigation/native";
+
 
 const reducer = (state, action) => {
     switch(action.type){
         case 'change_name':
             return {...state, name: {...state.name, value: action.payload}};
-        case 'change_email':
-            return {...state, email: {...state.email, value: action.payload}};
+        case 'change_password':
+            return {...state, password: {...state.password, value: action.payload}};
         case 'change_condition':
             return {...state, condition: {...state.condition, value: action.payload}};
         case 'change_location':
@@ -24,6 +27,8 @@ const reducer = (state, action) => {
 }
 
 const SignupProfile = () => {
+    const profileContext = useContext(UserContext);
+
     const healthConditions = [
         {label: 'cancer', value: 'cancer'},
         {label: 'diabetes', value: 'diabetes'}
@@ -35,11 +40,23 @@ const SignupProfile = () => {
 
     const [state, dispatch] = useReducer(reducer, {
         name: {value: '', type: 'text', optional: false, pickerOptions: []},
-        email: {value: '', type: 'text', optional: false, pickerOptions: []},
+        password: {value: '', type: 'text', optional: false, pickerOptions: []},
         condition: {value: '', type: 'dropdown', optional: false, pickerOptions: healthConditions},
         location: {value: '', type: 'dropdown', optional: true, pickerOptions: locations},
         image: {value: '', type: 'addPicture', optional: true, pickerOptions: []}
     });
+
+    const submitUserData = () => {
+        let data = {
+            name: state.name.value === '' ? undefined : state.name.value,
+            location: state.location.value === '' ? undefined : state.location.value,
+            conditions: [state.condition.value],
+            img: state.image.value === '' ? undefined : state.image.value,
+            password: state.password.value === '' ? undefined : state.password.value
+        };
+    
+        profileContext.createUser(JSON.parse(JSON.stringify(data)));
+    }
 
     return(
         <View style={styles.container}>
@@ -59,7 +76,8 @@ const SignupProfile = () => {
             {state.image.value ? 
                 <Image source={{ uri: state.image.value }} style={styles.profilePic} /> 
             : null}
-            <SubmitButton />
+            <SubmitButton onSubmit={submitUserData}/>
+            {profileContext.state.errorMessage ? Alert.alert(profileContext.state.errorMessage) : null}
         </View>
     )
 };
@@ -82,6 +100,12 @@ const styles = StyleSheet.create({
         marginTop: 125,
         marginLeft: 50,
         fontSize: 30
+    },
+    error: {
+        textAlign: 'center',
+        marginLeft: 50,
+        fontSize: 25,
+        color: 'orange'
     }
 })
 

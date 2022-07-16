@@ -4,24 +4,29 @@ import {createNativeStackNavigator } from "@react-navigation/native-stack";
 import Startup from './src/screens/Startup';
 import SignupProfile from './src/screens/SignupProfile';
 import SignupID from './src/screens/SignupID';
+import InitialLoad from './src/screens/InitialLoad';
+import { Provider as UserProvider } from './src/context/userContext';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="Startup" 
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen name="Startup" component={Startup} />
-        <Stack.Screen name="SignupProfile" component={SignupProfile} />
-        <Stack.Screen name="SignupID" component={SignupID} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator 
+          initialRouteName="InitialLoad" 
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <Stack.Screen name="InitialLoad" component={InitialLoad} />
+          <Stack.Screen name="Startup" component={Startup} />
+          <Stack.Screen name="SignupProfile" component={SignupProfile} />
+          <Stack.Screen name="SignupID" component={SignupID} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   )
 }
 

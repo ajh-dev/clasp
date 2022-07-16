@@ -18,8 +18,6 @@ const UserInput = ({ inputName, onInputChange, type, optionalStatus, pickerOptio
           quality: 1,
         });
       
-        console.log(result);
-      
         if (!result.cancelled) {
           onInputChange(result.uri);
         }
