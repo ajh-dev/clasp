@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import {
     Arvo_400Regular,
   } from "@expo-google-fonts/arvo";
+import { AntDesign } from '@expo/vector-icons';
+import NavigationBar from "../components/NavigationBar";
 
 const Profile = ({ navigation }) => {
     const [nameDisabled, setNameDisabled] = useState(false);
@@ -20,7 +22,7 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.fields}>Joe Shmo</Text>}
                 </Text>
                 <TouchableOpacity onPress={() => { setNameDisabled(nameDisabled ? false : true)}}>
-                    <Image style={styles.disableButton} source={require('../../assets/close-icon.png')}/>
+                    <AntDesign name="closecircleo" size={24} color="white" style={styles.disableButton}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.fieldsContainer}>
@@ -29,7 +31,7 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.fields}>cancer</Text>}
                 </Text>
                 <TouchableOpacity onPress={() => { setConditionDisabled(conditionDisabled ? false : true)}}>
-                    <Image style={styles.disableButton} source={require('../../assets/close-icon.png')}/>
+                    <AntDesign name="closecircleo" size={24} color="white" style={styles.disableButton}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.fieldsContainer}>
@@ -38,7 +40,7 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.fields}>New Jersey</Text>}
                 </Text>
                 <TouchableOpacity onPress={() => { setLocationDisabled(locationDisabled ? false : true)}}>
-                    <Image style={styles.disableButton} source={require('../../assets/close-icon.png')}/>
+                    <AntDesign name="closecircleo" size={24} color="white" style={styles.disableButton}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.fieldsContainer}>
@@ -47,7 +49,7 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.fields}>joeshmo@gmail.com</Text>}
                 </Text>
                 <TouchableOpacity onPress={() => { setEmailDisabled(emailDisabled ? false : true)}}>
-                    <Image style={styles.disableButton} source={require('../../assets/close-icon.png')}/>
+                    <AntDesign name="closecircleo" size={24} color="white" style={styles.disableButton}/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -57,7 +59,7 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
     asterisk: {
         fontFamily: "Arvo_400Regular",
-        fontSize: 25,
+        fontSize: 20,
         color: "#FFCA03",
         lineHeight: 18
     },
@@ -67,17 +69,17 @@ const styles = StyleSheet.create({
     },
     disabledText: {
         fontFamily: "Arvo_400Regular",
-        fontSize: 25,
+        fontSize: 20,
         color: "#FFCA03"
     },
     fields: {
         fontFamily: "Arvo_400Regular",
-        fontSize: 25,
+        fontSize: 20,
     },
     header: {
         fontFamily: "Arvo_400Regular",
-        fontSize: 50,
-        marginTop: 100,
+        fontSize: 40,
+        marginTop: 70,
         marginLeft: 50
     },
     image: {
@@ -87,13 +89,16 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     disableButton: {
-        width: 25,
-        height: 25,
-        marginLeft: 10
+        marginLeft: 10,
+        backgroundColor: 'red',
+        borderRadius: 12,
+        height: 24,
+        width: 24,
+        overflow: "hidden"
     },
     fieldsContainer: {
         marginLeft: 50,
-        marginTop: 20,
+        marginTop: 25,
         flexDirection: "row",
         alignItems: 'center'
     }

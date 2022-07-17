@@ -7,7 +7,7 @@ import {
 
 const SubmitButton = ({ navigation }) => {
     return (
-        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate('Home')}>
             <Text style={styles.submitText}>continue</Text>
         </TouchableOpacity>
     );
