@@ -1,8 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const User = mongoose.model('User');
-const UserID = mongoose.model('UserID');
+const { User, UserProfile } = require('../models/User');
 const bcrypt = require('bcrypt');
 
 const router = express.Router();
@@ -17,7 +16,7 @@ router.post('/createuserprofile', async(req, res) => {
             if(err){
                 console.log(err);
             } else {
-                const user = new User({...newUserInfo, password: hash});
+                const user = new UserProfile({...newUserInfo, password: hash});
                 await user.save();
                 const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');
                 res.send({ token });
@@ -29,13 +28,13 @@ router.post('/createuserprofile', async(req, res) => {
 });
 
 router.post('/createuserid', async(req, res) => {
-    const { condition } = req.body;
-    let userCode = (Math.random() + 1).toString(36).substring(7).toString().toUpperCase();
+    const { conditions } = req.body;
+    let password = (Math.random() + 1).toString(36).substring(7).toString().toUpperCase();
 
     const checkID = () => {
-        UserID.find({ userCode }, function (err, result) {
-            if(result){
-                userCode = (Math.random() + 1).toString(36).substring(7).toString().toUpperCase();
+        User.find({ password }, function (err, result) {
+            if(!result.length === 0){
+                password = (Math.random() + 1).toString(36).substring(7).toString().toUpperCase();
                 checkID();
             }
         });   
@@ -44,15 +43,17 @@ router.post('/createuserid', async(req, res) => {
     checkID();
 
     try{
-        bcrypt.hash(userCode, saltRounds, async (err, hash) => {
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
             if(err){
                 console.log(err);
             } else {
-                const user = new UserID({ condition, userCode: hash });
+                const user = new User ({ conditions, password: hash });
+
+                console.log(user);
                 await user.save();
         
                 const token = jwt.sign({ userID: user._id }, 'MY_SECRET_KEY');
-                res.send({ token, userCode });   
+                res.send({ token, password });   
             }
         });
     } catch(err) {

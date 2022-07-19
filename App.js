@@ -15,8 +15,8 @@ const Stack = createNativeStackNavigator();
 function App() {
   
   return (
-    <MessageProvider>
-      <UserProvider>
+    <UserProvider>
+      <MessageProvider>
         <NavigationContainer>
           <Stack.Navigator 
             initialRouteName="Conversation" 
@@ -32,8 +32,8 @@ function App() {
             <Stack.Screen name="Profile" component={Profile} /> 
           </Stack.Navigator>
         </NavigationContainer>
-      </UserProvider>
-    </MessageProvider>
+      </MessageProvider>
+    </UserProvider>
   )
 }
 

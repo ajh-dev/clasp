@@ -8,10 +8,12 @@ const userReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload};
         case 'create_user':
+            axios.defaults.headers.common['authorization'] = action.payload;
             return {errorMessage: '', token: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: ''};
         case 'create_user_id':
+            axios.defaults.headers.common['authorization'] = action.payload;
             return {errorMessage: '', token: action.payload.token, userCode: action.payload.userCode};
         default:
             return state;
