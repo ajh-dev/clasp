@@ -8,7 +8,7 @@ const SubmitButton = ({ navigation, onSubmit }) => {
       style={styles.submitButton}
       onPress={() => {
         onSubmit();
-        navigation.navigate("Profile");
+        navigation.navigate("Home");
       }}
     >
       <Text style={styles.submitText}>continue</Text>

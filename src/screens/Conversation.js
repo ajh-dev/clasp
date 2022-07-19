@@ -17,13 +17,7 @@ const Conversation = ({ navigation }) => {
 
   return (
     <View>
-      <TouchableOpacity
-        onPress={messageContext.sendMessage({
-          message: "hello",
-          sender: "me",
-          receiver: "you",
-        })}
-      >
+      <TouchableOpacity>
         <Text style={styles.centertest}>Hello there</Text>
       </TouchableOpacity>
     </View>
@@ -33,7 +27,7 @@ const Conversation = ({ navigation }) => {
 const styles = StyleSheet.create({
   centertest: {
     alignSelf: "center",
-    justifyContext: "center",
+    justifyContent: "center",
   },
 });
 

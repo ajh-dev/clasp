@@ -9,7 +9,7 @@ import { Provider as UserProvider } from "./src/context/userContext";
 import { Provider as MessageProvider } from "./src/context/messageContext";
 import Profile from "./src/screens/Profile";
 import Conversation from "./src/screens/Conversation";
-import Home from './src/screens/Home';
+import Home from "./src/screens/Home";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +19,7 @@ function App() {
       <MessageProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="Conversation"
+            initialRouteName="InitialLoad"
             screenOptions={{
               headerShown: false,
             }}
@@ -30,7 +30,7 @@ function App() {
             <Stack.Screen name="SignupProfile" component={SignupProfile} />
             <Stack.Screen name="SignupID" component={SignupID} />
             <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Home" component={Home} />  
+            <Stack.Screen name="Home" component={Home} />
           </Stack.Navigator>
         </NavigationContainer>
       </MessageProvider>

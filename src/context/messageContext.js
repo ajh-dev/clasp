@@ -4,9 +4,6 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { io } from "socket.io-client";
 import { ENDPOINT } from "../api/ENDPOINT";
-import clasp from "../api/clasp";
-
-const socket = io(ENDPOINT);
 
 const messageReducer = (state, action) => {
   switch (action.type) {
@@ -34,10 +31,11 @@ const messageReducer = (state, action) => {
 //     }
 // };
 
-const loadConversations = async () => {
+const loadConversations = (dispatch) => async () => {
   try {
-    const response = claspApi.get("/conversations");
-    dispatch({ type: "load_conversation", payload: response });
+    await axios.get(ENDPOINT + "/conversations").then((response) => {
+      dispatch({ type: "load_conversation", payload: response });
+    });
   } catch (err) {
     dispatch({
       type: "add_error",
@@ -46,7 +44,7 @@ const loadConversations = async () => {
   }
 };
 
-const sendMessage = async (newMessage, conversationID) => {
+const sendMessage = (dispatch) => async (newMessage, conversationID) => {
   try {
     const response = claspApi.send(
       "/createmessage/" + conversationID,
@@ -62,7 +60,7 @@ const sendMessage = async (newMessage, conversationID) => {
   }
 };
 
-const createConversation = async () => {
+const createConversation = (dispatch) => async () => {
   try {
     const response = claspApi.send("/createconversation");
   } catch (err) {
@@ -77,7 +75,6 @@ export const { Provider, Context } = createDataContext(
   messageReducer,
   { sendMessage, loadConversations, createConversation },
   {
-    curConvo: [{ message: "", sender: "", receiver: "" }],
     error: "",
     conversations: [],
   }
