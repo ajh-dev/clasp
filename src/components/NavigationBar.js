@@ -1,7 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Button } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 
 const NavigationBar = () => {
   return (

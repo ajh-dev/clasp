@@ -9,6 +9,8 @@ import { Provider as UserProvider } from "./src/context/userContext";
 import { Provider as MessageProvider } from "./src/context/messageContext";
 import Profile from "./src/screens/Profile";
 import Conversation from "./src/screens/Conversation";
+import UserDataCollection from "./src/screens/UserDataCollection";
+import UserDataList from "./src/screens/UserDataList";
 import Home from "./src/screens/Home";
 
 const Stack = createNativeStackNavigator();
@@ -19,11 +21,16 @@ function App() {
       <MessageProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="InitialLoad"
+            initialRouteName="Startup"
             screenOptions={{
               headerShown: false,
             }}
           >
+            <Stack.Screen
+              name="UserDataCollection"
+              component={UserDataCollection}
+            />
+            <Stack.Screen name="UserDataList" component={UserDataList} />
             <Stack.Screen name="Conversation" component={Conversation} />
             <Stack.Screen name="InitialLoad" component={InitialLoad} />
             <Stack.Screen name="Startup" component={Startup} />
