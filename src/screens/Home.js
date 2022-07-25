@@ -11,36 +11,36 @@ function Home({ navigation }) {
             <Text style={styles.header}>messages</Text>
             <View style={styles.messagesContainer}>           
                 <ScrollView>
-                    <View style={styles.message}>
+                    <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('Message')}>
                         <View style={styles.horizontalLine}/>
                         <Text style={styles.messageHeader}>Adam Hollander</Text>
                         <Text style={styles.messageText}>Hello</Text>
                         <View style={styles.horizontalLine}/>
-                    </View>
-                    <View style={styles.message}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('Message')}>
                         <View style={styles.horizontalLine}/>
                         <Text style={styles.messageHeader}>Adam Hollander</Text>
                         <Text style={styles.messageText}>Hello</Text>
                         <View style={styles.horizontalLine}/>
-                    </View>
-                    <View style={styles.message}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('Message')}>
                         <View style={styles.horizontalLine}/>
                         <Text style={styles.messageHeader}>Adam Hollander</Text>
                         <Text style={styles.messageText}>Hello</Text>
                         <View style={styles.horizontalLine}/>
-                    </View>
-                    <View style={styles.message}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('Message')}>
                         <View style={styles.horizontalLine}/>
                         <Text style={styles.messageHeader}>Adam Hollander</Text>
                         <Text style={styles.messageText}>Hello</Text>
                         <View style={styles.horizontalLine}/>
-                    </View>
-                    <View style={styles.message}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.message} onPress={() => navigation.navigate('Message')}>
                         <View style={styles.horizontalLine}/>
                         <Text style={styles.messageHeader}>Adam Hollander</Text>
                         <Text style={styles.messageText}>Hello</Text>
                         <View style={styles.horizontalLine}/>
-                    </View>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
             <TouchableOpacity style={[styles.button, {backgroundColor: '#61B4E6'}]}>
@@ -52,7 +52,7 @@ function Home({ navigation }) {
             <TouchableOpacity style={[styles.button, {backgroundColor: '#7BD2F1'}]}>
                 <Text style={styles.buttonText}>suggested resources</Text>
             </TouchableOpacity>
-            <NavigationBar/>
+            <NavigationBar navigation={ navigation }/>
         </View>
     );
 }

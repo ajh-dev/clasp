@@ -29,7 +29,7 @@ const SignupID = ({ navigation }) => {
                     curPicker={healthCondition}
                 />
             </View>
-            <SubmitButton />
+            <SubmitButton navigation={ navigation }/>
         </View>
     );
 };

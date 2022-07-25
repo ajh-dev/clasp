@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Button } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import {
     Arvo_400Regular,
   } from "@expo-google-fonts/arvo";
 
-const NavigationBar = () => {
+const NavigationBar = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <Text style={styles.text}>profile</Text>
             </TouchableOpacity>
             <View style={styles.verticalLine}/>

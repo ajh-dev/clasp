@@ -6,6 +6,7 @@ import SignupProfile from './src/screens/SignupProfile';
 import SignupID from './src/screens/SignupID';
 import Profile from './src/screens/Profile';
 import Home from './src/screens/Home';
+import Message from './src/screens/Message';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ function App() {
         <Stack.Screen name="SignupID" component={SignupID} />
         <Stack.Screen name="Home" component={Home} /> 
         <Stack.Screen name="Profile" component={Profile} /> 
+        <Stack.Screen name="Message" component={Message} />
       </Stack.Navigator>
     </NavigationContainer>
   )
