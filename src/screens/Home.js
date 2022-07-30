@@ -47,7 +47,10 @@ function Home({ navigation }) {
           </View>
         </ScrollView>
       </View>
-      <TouchableOpacity style={[styles.button, { backgroundColor: "#61B4E6" }]}>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: "#61B4E6" }]}
+        onPress={() => navigation.navigate("UserDataList")}
+      >
         <Text style={styles.buttonText}>user-reported data</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, { backgroundColor: "#ECD0FF" }]}>

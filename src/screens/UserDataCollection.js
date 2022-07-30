@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 import NavigationBar from "../components/NavigationBar";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import UserDataQuery from "../components/UserDataQuery";

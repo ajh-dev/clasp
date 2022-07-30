@@ -88,13 +88,13 @@ const Startup = ({ navigation }) => {
           <Text style={styles.header}>Let's get started...</Text>
           <TouchableOpacity
             style={[styles.red, styles.signupButton]}
-            onPress={() => navigation.navigate("UserDataList")}
+            onPress={() => navigation.navigate("SignupProfile")}
           >
             <Text style={styles.subHeader}>create account</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.orange, styles.signupButton]}
-            onPress={() => navigation.navigate("UserDataList")}
+            onPress={() => navigation.navigate("SignupID")}
           >
             <Text style={styles.subHeader}>or not (id sign in)</Text>
           </TouchableOpacity>
