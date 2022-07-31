@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, FlatList, KeyboardAvoidingView } from "react-native";
 import {
     Arvo_400Regular,
   } from "@expo-google-fonts/arvo"; 
@@ -8,9 +8,13 @@ import BackButton from '../components/BackButton';
 import MessageBox from '../components/MessageBox';
   
 const Message = ({ navigation }) => {
+    const [curText, setCurText] = useState({message: "", sender: "me"})
+    const [convoTexts, setConvoTexts] = useState([]);
 
-    const [text, setText] = useState('');
-    const [wasPressed, setWasPressed] = useState(false);
+    const sendMessage = () => {
+        setConvoTexts([...convoTexts, curText]);
+        setCurText({message: "", sender: "you"});
+    }
 
     return (
         <View style={styles.container}>
@@ -20,30 +24,43 @@ const Message = ({ navigation }) => {
                 <Text style={styles.subHeader}>a fellow cancer patient</Text>
                 <Image style={styles.image} source={require('../../assets/blank-profile.png')} />
             </View>
-            {wasPressed && <MessageBox text={text} pressed={wasPressed}/>}
-            <View style={styles.messageBar}>
-                <TextInput 
-                style={styles.inputBar}
-                onChangeText={newText => setText(newText)}
-                defaultValue={text}
-                />
-                <TouchableOpacity style={styles.sendButton} onPress={() => setWasPressed(!wasPressed)}>
-                    <Feather name="corner-right-up" size={35} color="black" />
-                </TouchableOpacity>
-            </View>
+            <FlatList
+                data={convoTexts}
+                renderItem={({item}) => <MessageBox text={item.message} pressed={item.sender === "me"}/>}
+                contentContainerStyle={styles.messages}
+                inverted
+            />
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <View style={styles.messageBar}>
+                    <TextInput 
+                        style={styles.inputBar}
+                        onChangeText={newText => setCurText({...curText, message: newText})}
+                        value={curText.message}
+                    />
+                    <TouchableOpacity style={styles.sendButton} onPress={() => sendMessage()}>
+                        <Feather name="corner-right-up" size={35} color="black" />
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         </View>
     );
   }
 
 const styles = StyleSheet.create({
+    messages: {
+        flexDirection: 'column-reverse'
+    },
     inputBar: {
-        width: 300,
         height: 35,
-        marginRight: 25,
+        marginLeft: 15,
+        marginRight: 10,
         backgroundColor: 'white',
         borderRadius: 28,
         padding: 10,
         fontFamily: "Arvo_400Regular",
+        flex: 5
     },
     container: {
         flex: 1,
@@ -72,17 +89,16 @@ const styles = StyleSheet.create({
     messageBar: {
         backgroundColor: '#E0E0E0',
         width: '100%',
-        height: 110,
-        bottom: 0,
-        position: 'absolute',
+        paddingVertical: 10,
+        alignSelf: 'flex-end',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     sendButton: {
         backgroundColor: 'tomato',
         borderRadius: 17.5,
-        right: 20,
-        position: 'absolute'
+        marginRight: 20,
     },
     subHeader: {
       fontFamily: "Arvo_400Regular",

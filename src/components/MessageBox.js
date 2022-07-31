@@ -7,7 +7,7 @@ import {
 const MessageBox = ({ text, pressed }) => {
     if (pressed) {
         return (
-            <View style={[styles.messageBox, {right: 10}]}>
+            <View style={[styles.messageBox, styles.sent]}>
                 <Text style={styles.text}>{text}</Text>
                 <View style={styles.rightTail}/>
                 <View style={styles.rightTailOverlap}/>
@@ -15,7 +15,7 @@ const MessageBox = ({ text, pressed }) => {
         );
     } else {
         return (
-            <View style={[styles.messageBox, {left: 10}]}>
+            <View style={[styles.messageBox, styles.received]}>
                 <View style={styles.leftTail}/>
                 <View style={styles.leftTailOverlap}/>
                 <Text style={styles.text}>{text}</Text>
@@ -25,17 +25,22 @@ const MessageBox = ({ text, pressed }) => {
 }
 
 const styles = StyleSheet.create({
-    messageBox: {
+    sent: {
+        alignSelf: 'flex-end', 
+        alignItems: 'flex-end',
         backgroundColor: 'tomato',
-        width: 300,
+    },
+    received: {
+        alignItems: 'flex-start',
+        alignSelf: 'flex-start',
+        backgroundColor: '#ff9999'
+    },
+    messageBox: {
         height: 50,
         borderRadius: 20,
         marginLeft: 10,
         marginRight: 10,
         marginTop: 20,
-        top: 150,
-        justifyContent: 'center',
-        position: 'absolute'
     },
     text: {
         fontFamily: "Arvo_400Regular",
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     },
     leftTail: {
         position: "absolute",
-        backgroundColor: 'tomato',
+        backgroundColor: '#ff9999',
         width: 20,
         height: 25,
         bottom: 0,

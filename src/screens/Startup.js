@@ -76,10 +76,10 @@ const Startup = ({ navigation }) => {
                     </View>
                     <View style={[styles.container, styles.gray]}>
                         <Text style={styles.header}>Let's get started...</Text>
-                        <TouchableOpacity style={[styles.red, styles.signupButton]} onPress={() => navigation.navigate('SignupProfile')}>
+                        <TouchableOpacity style={[styles.red, styles.signupButton]} onPress={() => navigation.navigate('Message')}>
                                 <Text style={styles.subHeader}>create account</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.orange, styles.signupButton]} onPress={() => navigation.navigate('SignupID')}>
+                        <TouchableOpacity style={[styles.orange, styles.signupButton]} onPress={() => navigation.navigate('Message')}>
                             <Text style={styles.subHeader}>or not (id sign in)</Text>
                         </TouchableOpacity>
                     </View>
