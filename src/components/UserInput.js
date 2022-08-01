@@ -19,8 +19,6 @@ const UserInput = ({ inputName, onInputChange, type, optionalStatus, pickerOptio
           quality: 1,
         });
       
-        console.log(result);
-      
         if (!result.cancelled) {
           onInputChange(result.uri);
         }
@@ -35,6 +33,7 @@ const UserInput = ({ inputName, onInputChange, type, optionalStatus, pickerOptio
                     onChangeText={newInput => onInputChange(newInput)}
                     autoCapitalize='none'
                     autoCorrect={false}
+                    secureTextEntry={inputName === 'password' ? true : false}
                 /> 
                 : type == 'dropdown' ?
                 <RNPickerSelect
