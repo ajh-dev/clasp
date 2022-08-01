@@ -4,14 +4,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Startup from "./src/screens/Startup";
 import SignupProfile from "./src/screens/SignupProfile";
 import SignupID from "./src/screens/SignupID";
+import Profile from "./src/screens/Profile";
+import Home from "./src/screens/Home";
+import Message from "./src/screens/Message";
 import InitialLoad from "./src/screens/InitialLoad";
 import { Provider as UserProvider } from "./src/context/userContext";
 import { Provider as MessageProvider } from "./src/context/messageContext";
-import Profile from "./src/screens/Profile";
-import Conversation from "./src/screens/Conversation";
 import UserDataCollection from "./src/screens/UserDataCollection";
 import UserDataList from "./src/screens/UserDataList";
-import Home from "./src/screens/Home";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,8 +36,9 @@ function App() {
             <Stack.Screen name="Startup" component={Startup} />
             <Stack.Screen name="SignupProfile" component={SignupProfile} />
             <Stack.Screen name="SignupID" component={SignupID} />
-            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Message" component={Message} />
           </Stack.Navigator>
         </NavigationContainer>
       </MessageProvider>

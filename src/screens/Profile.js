@@ -5,6 +5,7 @@ import {
   } from "@expo-google-fonts/arvo";
 import { AntDesign } from '@expo/vector-icons';
 import NavigationBar from "../components/NavigationBar";
+import BackButton from "../components/BackButton";
 
 const Profile = ({ navigation }) => {
     const [nameDisabled, setNameDisabled] = useState(false);
@@ -14,6 +15,7 @@ const Profile = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <BackButton navigation={ navigation }/>
             <Text style={styles.header}>Profile</Text>
             <Image style={styles.image} source={require('../../assets/blank-profile.png')} />
             <View style={styles.fieldsContainer}>
@@ -48,10 +50,11 @@ const Profile = ({ navigation }) => {
                     <Text style={styles.disabledText}><Text style={styles.asterisk}>*</Text>Disabled</Text> : 
                     <Text style={styles.fields}>joeshmo@gmail.com</Text>}
                 </Text>
-                <TouchableOpacity onPress={() => { setEmailDisabled(emailDisabled ? false : true)}}>
+                <TouchableOpacity onPress={() => { setEmailDisabled(!emailDisabled)}}>
                     <AntDesign name="closecircleo" size={24} color="white" style={styles.disableButton}/>
                 </TouchableOpacity>
             </View>
+            <NavigationBar navigation={ navigation }/>
         </View>
     );
 }

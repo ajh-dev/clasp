@@ -13,7 +13,6 @@ const SignupID = ({ navigation }) => {
     let data = {
       conditions: [healthCondition],
     };
-    console.log(data);
 
     profileContext.createUserID(JSON.parse(JSON.stringify(data)));
   };
