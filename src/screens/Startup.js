@@ -8,13 +8,13 @@ import {
   StatusBar,
   TouchableOpacity,
   ScrollView,
-  Touchable,
 } from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 const { width, height } = Dimensions.get("window");
+
 const Startup = ({ navigation }) => {
   const [sliderState, setSliderState] = useState(0);
   const [appIsReady, setAppIsReady] = useState(false);
@@ -88,7 +88,7 @@ const Startup = ({ navigation }) => {
           <Text style={styles.header}>Let's get started...</Text>
           <TouchableOpacity
             style={[styles.red, styles.signupButton]}
-            onPress={() => navigation.navigate("SignupID")}
+            onPress={() => navigation.navigate("SignupProfile")}
           >
             <Text style={styles.subHeader}>create account</Text>
           </TouchableOpacity>

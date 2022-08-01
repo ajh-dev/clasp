@@ -38,7 +38,11 @@ const SignupID = ({ navigation }) => {
       {profileContext.state.userCode
         ? Alert.alert(profileContext.state.userCode)
         : null}
-      <SubmitButton navigation={navigation} onSubmit={submitUserData} />
+      <SubmitButton
+        navigation={navigation}
+        onSubmit={submitUserData}
+        toScreen="Home"
+      />
     </View>
   );
 };

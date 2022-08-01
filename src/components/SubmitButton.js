@@ -2,13 +2,13 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 
-const SubmitButton = ({ navigation, onSubmit }) => {
+const SubmitButton = ({ navigation, onSubmit, toScreen }) => {
   return (
     <TouchableOpacity
       style={styles.submitButton}
       onPress={() => {
         onSubmit();
-        navigation.navigate("Home");
+        navigation.navigate(toScreen);
       }}
     >
       <Text style={styles.submitText}>continue</Text>

@@ -10,6 +10,9 @@ import Message from "./src/screens/Message";
 import InitialLoad from "./src/screens/InitialLoad";
 import { Provider as UserProvider } from "./src/context/userContext";
 import { Provider as MessageProvider } from "./src/context/messageContext";
+import UserDataCollection from "./src/screens/UserDataCollection";
+import UserDataList from "./src/screens/UserDataList";
+
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -18,11 +21,16 @@ function App() {
       <MessageProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="InitialLoad"
+            initialRouteName="Startup"
             screenOptions={{
               headerShown: false,
             }}
           >
+            <Stack.Screen
+              name="UserDataCollection"
+              component={UserDataCollection}
+            />
+            <Stack.Screen name="UserDataList" component={UserDataList} />
             <Stack.Screen name="InitialLoad" component={InitialLoad} />
             <Stack.Screen name="Startup" component={Startup} />
             <Stack.Screen name="SignupProfile" component={SignupProfile} />
