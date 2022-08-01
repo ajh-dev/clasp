@@ -31,7 +31,6 @@ function App() {
               component={UserDataCollection}
             />
             <Stack.Screen name="UserDataList" component={UserDataList} />
-            <Stack.Screen name="Conversation" component={Conversation} />
             <Stack.Screen name="InitialLoad" component={InitialLoad} />
             <Stack.Screen name="Startup" component={Startup} />
             <Stack.Screen name="SignupProfile" component={SignupProfile} />
