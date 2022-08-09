@@ -12,6 +12,7 @@ import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import SubmitButton from "../components/SubmitButton";
 import { Context as UserContext } from "../context/userContext";
 import { findFocusedRoute } from "@react-navigation/native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,6 +52,12 @@ const SignupProfile = ({ navigation }) => {
     { label: "randolph", value: "randolph" },
   ];
 
+  const fixtures = [
+    {label: 'New York', location: {lat: 40.7033127, lng: -73.979681}},
+    {label: 'Rio', location: {lat: -22.066452, lng: -42.9232368}},
+    {label: 'Tokyo', location: {lat: 35.673343, lng: 139.710388}}
+  ];
+
   const [state, dispatch] = useReducer(reducer, {
     name: { value: "", type: "text", optional: false, pickerOptions: [] },
     password: { value: "", type: "text", optional: false, pickerOptions: [] },
@@ -81,6 +88,11 @@ const SignupProfile = ({ navigation }) => {
     profileContext.createUser(JSON.parse(JSON.stringify(data)));
   };
 
+  const onSuggestSelect = (e) => {
+    const tmpSelected = e ? e.description : '';
+    this.setState({location: tmpSelected});
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>create profile</Text>
@@ -99,6 +111,20 @@ const SignupProfile = ({ navigation }) => {
           />
         );
       })}
+      <GooglePlacesAutocomplete 
+        placeholder="location"
+        initialValue="N/A"
+        onPress={onSuggestSelect}
+        query={{
+          key: 'AIzaSyARPUBxhwqhVgF3MHQGaH9tQImkgxZgk-w',
+          language: 'en',
+        }}
+        requestUrl={{
+          useOnPlatform: 'web', // or "all"
+          url:
+            'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api', // or any proxy server that hits https://maps.googleapis.com/maps/api
+        }}
+        />
       {state.image.value ? (
         <Image source={{ uri: state.image.value }} style={styles.profilePic} />
       ) : null}
