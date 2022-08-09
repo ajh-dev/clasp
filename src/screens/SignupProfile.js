@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import SubmitButton from "../components/SubmitButton";
 import { Context as UserContext } from "../context/userContext";
 import { findFocusedRoute } from "@react-navigation/native";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -46,33 +47,30 @@ const SignupProfile = ({ navigation }) => {
     { label: "cancer", value: "cancer" },
     { label: "diabetes", value: "diabetes" },
   ];
-  const locations = [
-    { label: "livingston", value: "livinston" },
-    { label: "randolph", value: "randolph" },
-  ];
-
+  const [location, setLocation] = useState(null);
   const [state, dispatch] = useReducer(reducer, {
     name: { value: "", type: "text", optional: false, pickerOptions: [] },
     password: { value: "", type: "text", optional: false, pickerOptions: [] },
+    // location: { value: "", type: "text", optional: true, pickerOptions: [] },
     condition: {
       value: "",
       type: "dropdown",
       optional: false,
       pickerOptions: healthConditions,
     },
-    location: {
-      value: "",
-      type: "dropdown",
-      optional: true,
-      pickerOptions: locations,
-    },
+    // location: {
+    //   value: "",
+    //   type: "dropdown",
+    //   optional: true,
+    //   pickerOptions: locations,
+    // },
     image: { value: "", type: "addPicture", optional: true, pickerOptions: [] },
   });
 
   const submitUserData = () => {
     let data = {
       name: state.name.value === "" ? undefined : state.name.value,
-      location: state.location.value === "" ? undefined : state.location.value,
+      location: location.value === "" ? undefined : location.value,
       conditions: [state.condition.value],
       img: state.image.value === "" ? undefined : state.image.value,
       password: state.password.value === "" ? undefined : state.password.value,
@@ -80,6 +78,11 @@ const SignupProfile = ({ navigation }) => {
 
     profileContext.createUser(JSON.parse(JSON.stringify(data)));
   };
+
+  const onPlacesSelect = (e) => {
+    const tmpSelected = e ? e.description : '';
+    setLocation(tmpSelected);
+  }
 
   return (
     <View style={styles.container}>
@@ -99,6 +102,22 @@ const SignupProfile = ({ navigation }) => {
           />
         );
       })}
+        <Text style={styles.label}>Location</Text>
+          <GooglePlacesAutocomplete 
+            placeholder="location"
+            initialValue="N/A"
+            onPress={onPlacesSelect}
+            styles={pickerSelectStyles}
+            query={{
+              key: 'AIzaSyARPUBxhwqhVgF3MHQGaH9tQImkgxZgk-w',
+              language: 'en',
+            }}
+            requestUrl={{
+              useOnPlatform: 'web', // or "all"
+              url:
+                'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api', // or any proxy server that hits https://maps.googleapis.com/maps/api
+            }}
+            />
       {state.image.value ? (
         <Image source={{ uri: state.image.value }} style={styles.profilePic} />
       ) : null}
@@ -138,6 +157,33 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     fontSize: 25,
     color: "orange",
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    width: 250,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: "black",
+    borderRadius: 4,
+    color: "black",
+    height: 50, // to ensure the text is never behind the icon
+  },
+  placeholder: {
+    color: "black",
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
 
