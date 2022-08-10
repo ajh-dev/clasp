@@ -28,11 +28,11 @@ const reducer = (state, action) => {
         ...state,
         condition: { ...state.condition, value: action.payload },
       };
-    case "change_location":
-      return {
-        ...state,
-        location: { ...state.location, value: action.payload },
-      };
+    // case "change_location":
+    //   return {
+    //     ...state,
+    //     location: { ...state.location, value: action.payload },
+    //   };
     case "change_image":
       return { ...state, image: { ...state.image, value: action.payload } };
     default:
@@ -70,7 +70,7 @@ const SignupProfile = ({ navigation }) => {
   const submitUserData = () => {
     let data = {
       name: state.name.value === "" ? undefined : state.name.value,
-      location: location.value === "" ? undefined : location.value,
+      location: location === null ? undefined : location,
       conditions: [state.condition.value],
       img: state.image.value === "" ? undefined : state.image.value,
       password: state.password.value === "" ? undefined : state.password.value,
@@ -102,7 +102,7 @@ const SignupProfile = ({ navigation }) => {
           />
         );
       })}
-        <Text style={styles.label}>Location</Text>
+        <Text style={styles.label}>Location (optional)</Text>
           <GooglePlacesAutocomplete 
             placeholder="location"
             initialValue="N/A"
