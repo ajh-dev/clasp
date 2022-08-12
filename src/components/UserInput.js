@@ -28,8 +28,6 @@ const UserInput = ({
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       onInputChange(result.uri);
     }

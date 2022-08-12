@@ -1,66 +1,97 @@
-import React from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import NavigationBar from "../components/NavigationBar";
+import ConversationPreview from "../components/ConversationPreview";
+import { Context as messageContext } from "../context/messageContext";
+import { Context as userContext } from "../context/userContext";
+import { io } from "socket.io-client";
 
 function Home({ navigation }) {
-  return (
+  const messageBackend = useContext(messageContext);
+  const userBackend = useContext(userContext);
+  const [isConversationCreate, setIsConversationCreate] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [isListener, setIsListener] = useState(true);
+
+  const socket = useRef();
+  const flatRef = useRef();
+
+  const resetMessageList = () => {
+    flatRef.current.scrollToEnd({
+      animated: true,
+    });
+  };
+
+  useEffect(() => {
+    if (userBackend.state.token) {
+      socket.current = io("http://192.168.0.132:4000");
+      socket.current.emit("add-user-conversation", userBackend.state.token);
+      messageBackend.loadConversations();
+      setFirstLoad(false);
+    }
+  }, [userBackend.state.token]);
+
+  useEffect(() => {
+    if (
+      isConversationCreate &&
+      !firstLoad &&
+      messageBackend.state.conversations.length > 0
+    ) {
+      socket.current.emit("add-conversation", {
+        self: userBackend.state.token,
+        conversation:
+          messageBackend.state.conversations[
+            messageBackend.state.conversations.length - 1
+          ],
+      });
+      setIsConversationCreate(false);
+    }
+  }, [messageBackend.state.conversations]);
+
+  useEffect(() => {
+    if (isListener && socket.current) {
+      socket.current.on("conversation-receive", (newConversation) => {
+        messageBackend.addConversation(newConversation);
+      });
+      setIsListener(false);
+    }
+  }, [socket.current]);
+  return userBackend.state.token ? (
     <View style={styles.container}>
       <Text style={styles.header}>messages</Text>
       <View style={styles.messagesContainer}>
-        <ScrollView>
-          <TouchableOpacity
-            style={styles.message}
-            onPress={() => navigation.navigate("Message")}
-          >
-            <View style={styles.horizontalLine} />
-            <Text style={styles.messageHeader}>Adam Hollander</Text>
-            <Text style={styles.messageText}>Hello</Text>
-            <View style={styles.horizontalLine} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.message}
-            onPress={() => navigation.navigate("Message")}
-          >
-            <View style={styles.horizontalLine} />
-            <Text style={styles.messageHeader}>Adam Hollander</Text>
-            <Text style={styles.messageText}>Hello</Text>
-            <View style={styles.horizontalLine} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.message}
-            onPress={() => navigation.navigate("Message")}
-          >
-            <View style={styles.horizontalLine} />
-            <Text style={styles.messageHeader}>Adam Hollander</Text>
-            <Text style={styles.messageText}>Hello</Text>
-            <View style={styles.horizontalLine} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.message}
-            onPress={() => navigation.navigate("Message")}
-          >
-            <View style={styles.horizontalLine} />
-            <Text style={styles.messageHeader}>Adam Hollander</Text>
-            <Text style={styles.messageText}>Hello</Text>
-            <View style={styles.horizontalLine} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.message}
-            onPress={() => navigation.navigate("Message")}
-          >
-            <View style={styles.horizontalLine} />
-            <Text style={styles.messageHeader}>Adam Hollander</Text>
-            <Text style={styles.messageText}>Hello</Text>
-            <View style={styles.horizontalLine} />
-          </TouchableOpacity>
-        </ScrollView>
+        {messageBackend.state.conversations.length > 0 ? (
+          <FlatList
+            onContentSizeChange={resetMessageList}
+            ref={flatRef}
+            data={messageBackend.state.conversations}
+            renderItem={({ item }) => (
+              <ConversationPreview
+                navigation={navigation}
+                getUser={() => userBackend.getUserByID(item.users[0]._id)}
+                recentMessage={
+                  item.messages.length
+                    ? item.messages[0].message
+                    : "No messages yet"
+                }
+                conversationID={item._id}
+              />
+            )}
+          />
+        ) : (
+          <View>
+            <Text style={styles.subHeader}>no conversations</Text>
+          </View>
+        )}
       </View>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: "#61B4E6" }]}
@@ -74,12 +105,26 @@ function Home({ navigation }) {
       <TouchableOpacity style={[styles.button, { backgroundColor: "#7BD2F1" }]}>
         <Text style={styles.buttonText}>suggested resources</Text>
       </TouchableOpacity>
-      <NavigationBar navigation={navigation} />
+      <NavigationBar
+        navigation={navigation}
+        createConversation={() => {
+          messageBackend.createConversation();
+          setIsConversationCreate(true);
+        }}
+      />
+    </View>
+  ) : (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="tomato" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
   button: {
     width: 300,
     padding: 20,
@@ -106,31 +151,16 @@ const styles = StyleSheet.create({
     left: 50,
     position: "absolute",
   },
-  message: {
-    marginTop: 10,
+  subHeader: {
+    fontFamily: "Arvo_400Regular",
+    fontSize: 25,
+    alignSelf: "center",
   },
   messagesContainer: {
     width: "75%",
     height: 220,
     top: 130,
-  },
-  messageHeader: {
-    fontFamily: "Arvo_400Regular",
-    fontSize: 15,
-    marginTop: 5,
-    marginLeft: 20,
-    marginBottom: 10,
-  },
-  messageText: {
-    fontFamily: "Arvo_400Regular",
-    fontSize: 12,
-    marginLeft: 35,
-    marginBottom: 10,
-  },
-  horizontalLine: {
-    height: 1,
-    width: "100%",
-    backgroundColor: "black",
+    justifyContent: "center",
   },
 });
 

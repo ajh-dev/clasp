@@ -3,10 +3,25 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const { User, UserProfile } = require("../models/User");
 const bcrypt = require("bcrypt");
+const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
 
 const saltRounds = 15;
+
+router.get("/user/:userID", requireAuth, async (req, res) => {
+  try {
+    User.findById(req.params.userID, (err, user) => {
+      if (err) {
+        return res.status(422).send(err.message);
+      } else {
+        res.send(user);
+      }
+    });
+  } catch (err) {
+    return res.status(422).send(err.message);
+  }
+});
 
 router.post("/createuserprofile", async (req, res) => {
   let newUserInfo = req.body;
@@ -18,7 +33,7 @@ router.post("/createuserprofile", async (req, res) => {
       } else {
         const user = new UserProfile({ ...newUserInfo, password: hash });
         await user.save();
-        const token = jwt.sign({ userId: user._id }, "MY_SECRET_KEY");
+        const token = jwt.sign({ userID: user._id }, "MY_SECRET_KEY");
         res.send({ token });
       }
     });

@@ -12,6 +12,7 @@ import {
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import StartupSlide from "../components/StartupSlide";
 
 const { width, height } = Dimensions.get("window");
 
@@ -70,20 +71,19 @@ const Startup = ({ navigation }) => {
           />
           <Text style={styles.motto}>comfortable conversations</Text>
         </View>
-        <View style={[styles.container, styles.blue]}>
-          <Text style={styles.header}>Ease of Access</Text>
-          <Text style={styles.subHeader}>No Account Necessary</Text>
-          <Text style={styles.subHeader}>Just Start a Conversation</Text>
-          <Text style={styles.subHeader}>
-            {"Cost free...\nand always ad-free"}
-          </Text>
-        </View>
-        <View style={[styles.container, styles.red]}>
-          <Text style={styles.header}>Simple Privacy</Text>
-          <Text style={styles.subHeader}>No required personal data</Text>
-          <Text style={styles.subHeader}>Optional anonymity</Text>
-          <Text style={styles.subHeader}>Complete profile security</Text>
-        </View>
+        <StartupSlide
+          header="ease of access"
+          subheader1="no account necesary"
+          subheader2={"cost free...\nand always ad-free"}
+          isRed={false}
+        />
+        <StartupSlide
+          header="simple privacy"
+          subheader1="no required personal data"
+          subheader2="optional anonymity"
+          subheader3="complete profile security"
+          isRed
+        />
         <View style={[styles.container, styles.gray]}>
           <Text style={styles.header}>Let's get started...</Text>
           <TouchableOpacity
