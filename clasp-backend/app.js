@@ -12,19 +12,11 @@ const app = express();
 app.use(cors());
 const httpServer = createServer(app);
 
-const io = new Server(httpServer, {});
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(accountRoutes);
 app.use(messageRoutes);
 app.use(dataRoutes);
-
-io.on("connection", async (socket) => {
-  console.log("socket connection");
-  socket.on("sent_message", async (message) => {
-    io.emit("sent_message", message);
-  });
-});
 
 mongoose.connect("mongodb://localhost:27017/claspUserDB");
 

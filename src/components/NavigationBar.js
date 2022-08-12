@@ -2,14 +2,17 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
-const NavigationBar = ({ navigation }) => {
+const NavigationBar = ({ navigation, createConversation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
         <Text style={styles.text}>profile</Text>
       </TouchableOpacity>
       <View style={styles.verticalLine} />
-      <TouchableOpacity style={styles.messageIcon}>
+      <TouchableOpacity
+        style={styles.messageIcon}
+        onPress={() => createConversation()}
+      >
         <AntDesign name="message1" size={60} color="black" />
       </TouchableOpacity>
       <View style={styles.verticalLine} />

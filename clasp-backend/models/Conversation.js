@@ -8,17 +8,15 @@ const messageSchema = new mongoose.Schema({
     }, 
     sender: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     receiver: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
-    },
-    timestamp: {
-        type: Date,
+        ref: 'User',
         required: true
-    }
-});
+    },
+}, {timestamps: true});
 
 const conversationSchema = new mongoose.Schema({
     users: [{
