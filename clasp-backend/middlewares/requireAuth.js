@@ -15,11 +15,12 @@ module.exports = (req, res, next) => {
       return res.status(401).send({ error: "You must be logged in" });
     }
 
-    const userID = payload.userID;
+    const { userID } = payload;
 
-    const user = await User.findOne({ _id: userID }, (err, user) => {
-      req.user = user;
-      next();
-    }).clone();
+    const user = await User.findById(userID);
+
+    req.user = user;
+
+    next();
   });
 };
