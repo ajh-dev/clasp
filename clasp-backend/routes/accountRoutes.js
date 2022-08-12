@@ -18,7 +18,7 @@ router.post('/createuserprofile', async(req, res) => {
             } else {
                 const user = new UserProfile({...newUserInfo, password: hash});
                 await user.save();
-                const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY');
+                const token = jwt.sign({ userID: user._id }, 'MY_SECRET_KEY');
                 res.send({ token });
             }
         });
