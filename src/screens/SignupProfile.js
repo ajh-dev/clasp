@@ -102,7 +102,11 @@ const SignupProfile = ({ navigation }) => {
       {state.image.value ? (
         <Image source={{ uri: state.image.value }} style={styles.profilePic} />
       ) : null}
-      <SubmitButton onSubmit={submitUserData} navigation={navigation} />
+      <SubmitButton
+        onSubmit={submitUserData}
+        navigation={navigation}
+        toScreen="Home"
+      />
       {profileContext.state.errorMessage
         ? Alert.alert(profileContext.state.errorMessage)
         : null}
