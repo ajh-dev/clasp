@@ -2,18 +2,22 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 
-const SubmitButton = ({ navigation, onSubmit, toScreen }) => {
+const SubmitButton = ({ navigation, onSubmit, toScreen, params }) => {
   return (
     <TouchableOpacity
       style={styles.submitButton}
       onPress={() => {
         onSubmit();
-        navigation.navigate(toScreen);
+        navigation.navigate(toScreen, params);
       }}
     >
       <Text style={styles.submitText}>continue</Text>
     </TouchableOpacity>
   );
+};
+
+SubmitButton.defaultProps = {
+  params: {},
 };
 
 const styles = StyleSheet.create({

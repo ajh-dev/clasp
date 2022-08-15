@@ -19,7 +19,7 @@ const NumberToggle = ({ numberRange, style, onChange }) => {
             i + 1 === buttonPressed ? styles.orange : null,
           ]}
           onPress={() => {
-            onChange(i);
+            onChange(i + 1);
             setButtonPressed(i + 1);
           }}
           activeOpacity={1}

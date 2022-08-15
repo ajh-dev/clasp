@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import NavigationBar from "../components/NavigationBar";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import UserDataQuery from "../components/UserDataQuery";
 import SubmitButton from "../components/SubmitButton";
+import { Context as treatmentContext } from "../context/treatmentContext";
 
-const UserDataCollection = ({ navigation }) => {
+const UserDataCollection = ({ navigation, route }) => {
   const [generalHealth, setGeneralHealth] = useState(0);
   const [physicalHealth, setPhysicalHealth] = useState(0);
   const [mentalHealth, setMentalHealth] = useState(0);
   const [dailyHealth, setDailyHealth] = useState(0);
+  const treatmentBackend = useContext(treatmentContext);
 
   return (
     <View style={styles.container}>
@@ -38,7 +40,23 @@ const UserDataCollection = ({ navigation }) => {
         />
         <SubmitButton
           navigation={navigation}
-          onSubmit={() => console.log("submitted expreience")}
+          onSubmit={
+            typeof route.params.newTreatmentName === "undefined"
+              ? () =>
+                  treatmentBackend.addRating(
+                    route.params.treatmentID,
+                    generalHealth + physicalHealth + mentalHealth + dailyHealth
+                  )
+              : () =>
+                  treatmentBackend.createTreatment({
+                    treatment: route.params.newTreatmentName,
+                    ratings:
+                      generalHealth +
+                      physicalHealth +
+                      mentalHealth +
+                      dailyHealth,
+                  })
+          }
           toScreen="Home"
         />
       </View>

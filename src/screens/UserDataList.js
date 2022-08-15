@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -13,6 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 const _ = require("lodash");
 import UserInput from "../components/UserInput";
 import SubmitButton from "../components/SubmitButton";
+import { Context as treatmentContext } from "../context/treatmentContext";
 
 const testTreatments = [
   { name: "smoothies", rating: 5, id: 1 },
@@ -25,6 +26,16 @@ const testTreatments = [
   { name: "tea", rating: 19, id: 8 },
   { name: "vitamins", rating: 15, id: 9 },
 ];
+
+const calculateAverage = (ratings) => {
+  sum = 0;
+
+  for (let i = 0; i < ratings.length; i++) {
+    sum += ratings[i];
+  }
+
+  return Math.round(sum / ratings.length);
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,7 +50,6 @@ const reducer = (state, action) => {
 };
 
 const UserDataList = ({ navigation }) => {
-  const [allTreatments, setAllTreatments] = useState(testTreatments);
   const [userSearch, setUserSearch] = useState("");
   const [addTreatment, setAddTreatment] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
@@ -50,14 +60,29 @@ const UserDataList = ({ navigation }) => {
       pickerOptions: [],
     },
   });
+  const treatmentBackend = useContext(treatmentContext);
+  const [allTreatments, setAllTreatments] = useState(
+    treatmentBackend.state.treatments
+  );
+
+  useEffect(() => {
+    treatmentBackend.loadTreatments();
+  }, []);
 
   const modifyFilter = () => {
-    const filteredTreatments = _.filter(testTreatments, (treatment) => {
-      return treatment.name.includes(userSearch) || userSearch === "";
-    });
+    const filteredTreatments = _.filter(
+      treatmentBackend.state.treatments,
+      (treatment) => {
+        return treatment.treatment.includes(userSearch) || userSearch === "";
+      }
+    );
 
     setAllTreatments(filteredTreatments);
   };
+
+  useEffect(() => {
+    setAllTreatments(treatmentBackend.state.treatments);
+  }, [treatmentBackend.state.treatments]);
 
   useEffect(() => {
     modifyFilter();
@@ -89,27 +114,32 @@ const UserDataList = ({ navigation }) => {
             );
           })}
           <SubmitButton
+            onSubmit={() => console.log("Treatment created")}
             navigation={navigation}
-            onSubmit={() => console.log("Create treatment in database here")}
             toScreen="UserDataCollection"
+            params={{ newTreatmentName: state.Name.value }}
           />
         </View>
       ) : null}
       <View style={styles.treatmentList}>
-        <FlatList
-          style={styles.treatments}
-          renderItem={({ item }) => (
-            <TreatmentEntry
-              rating={item.rating}
-              name={item.name}
-              treatmentID={item.id}
-              navigation={navigation}
-            />
-          )}
-          keyExtractor={(treatment) => treatment.id}
-          data={allTreatments}
-          showsVerticalScrollIndicator={false}
-        />
+        {!treatmentBackend.state.treatments.empty ? (
+          <FlatList
+            style={styles.treatments}
+            renderItem={({ item }) => (
+              <TreatmentEntry
+                rating={calculateAverage(item.ratings)}
+                name={item.treatment}
+                treatmentID={item._id}
+                navigation={navigation}
+              />
+            )}
+            keyExtractor={(treatment) => treatment._id}
+            data={allTreatments}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <Text style={styles.title}>no data available</Text>
+        )}
       </View>
       <TouchableOpacity
         style={styles.addTreatment}

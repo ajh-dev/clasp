@@ -7,24 +7,26 @@ const router = express.Router();
 router.post("/createnewtreatment", requireAuth, async (req, res) => {
   let newTreatment = req.body;
 
-  try{
-    const treatment = new Treatment({...newTreatment, condition: req.user.conditions[0]});
+  try {
+    const treatment = new Treatment({
+      ...newTreatment,
+      condition: req.user.conditions[0],
+    });
     await treatment.save();
 
-    res.send("Treatment added");
+    res.send(treatment);
   } catch (err) {
     return res.status(422).send("Invalid treatment addition attempted");
   }
 });
 
-router.post("/addrating", requireAuth, async (req, res) => {
-  let rating = req.body;
+router.post("/addrating/:treatmentID", requireAuth, async (req, res) => {
+  let rating = req.body.rating;
 
-  try{
-    rating = new Treatment(rating);
+  try {
     await Treatment.findOneAndUpdate(
-      { treatment: rating.treatment },
-      { $push: { ratings: rating.ratings[0] } }
+      { _id: req.params.treatmentID },
+      { $push: { ratings: rating } }
     );
 
     res.send("Rating successfully added");
@@ -34,14 +36,18 @@ router.post("/addrating", requireAuth, async (req, res) => {
 });
 
 router.get("/gettreatments", requireAuth, async (req, res) => {
-  try{
-    Treatment.find({ condition: req.user.conditions[0] }, 'treatment ratings', (err, treatments) => {
-      if (err) {
-        return res.status(422).send("Invalid query");
-      } else {
-        res.send(treatments);
+  try {
+    Treatment.find(
+      { condition: req.user.conditions[0] },
+      "treatment ratings",
+      (err, treatments) => {
+        if (err) {
+          return res.status(422).send("Invalid query");
+        } else {
+          res.send(treatments);
+        }
       }
-    });
+    );
   } catch (err) {
     return res.status(422).send("Invalid query");
   }

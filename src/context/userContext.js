@@ -66,6 +66,7 @@ const createUserID = (dispatch) => async (userInfo) => {
     dispatch({ type: "create_user_id", payload: response.data });
     dispatch({ type: "clear_error_message" });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: "add_error",
       payload: "Something went wrong with signup",
