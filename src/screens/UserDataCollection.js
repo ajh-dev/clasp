@@ -42,12 +42,14 @@ const UserDataCollection = ({ navigation, route }) => {
           navigation={navigation}
           onSubmit={
             typeof route.params.newTreatmentName === "undefined"
-              ? () =>
+              ? () => {
                   treatmentBackend.addRating(
                     route.params.treatmentID,
                     generalHealth + physicalHealth + mentalHealth + dailyHealth
-                  )
-              : () =>
+                  );
+                  navigation.navigate("Home");
+                }
+              : () => {
                   treatmentBackend.createTreatment({
                     treatment: route.params.newTreatmentName,
                     ratings:
@@ -55,9 +57,10 @@ const UserDataCollection = ({ navigation, route }) => {
                       physicalHealth +
                       mentalHealth +
                       dailyHealth,
-                  })
+                  });
+                  navigation.navigate("Home");
+                }
           }
-          toScreen="Home"
         />
       </View>
       <NavigationBar isHome navigation={navigation} />

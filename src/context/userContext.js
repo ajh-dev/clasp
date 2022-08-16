@@ -74,8 +74,32 @@ const createUserID = (dispatch) => async (userInfo) => {
   }
 };
 
+const checkLogin = (dispatch) => async (loginInfo) => {
+  try {
+    const response = await claspApi.post("/user", loginInfo);
+
+    const { result, token } = response.data;
+
+    if (result) {
+      dispatch({ type: "create_user", payload: token });
+      dispatch({ type: "clear_error_message" });
+      await AsyncStorage.setItem("@api_token", token);
+    } else {
+      dispatch({ type: "add_error", payload: "Incorrect login information" });
+    }
+
+    return result;
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: "add_error",
+      payload: "Something went wrong with signup",
+    });
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   userReducer,
-  { createUser, localSignin, createUserID, getUserByID },
+  { createUser, localSignin, createUserID, getUserByID, checkLogin },
   { userCode: null, token: null, errorMessage: "" }
 );

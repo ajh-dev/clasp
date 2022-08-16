@@ -15,6 +15,7 @@ const SignupID = ({ navigation }) => {
     };
 
     profileContext.createUserID(JSON.parse(JSON.stringify(data)));
+    navigation.navigate("Home", { backRoute: "SignupID" });
   };
 
   const healthConditions = [
@@ -38,11 +39,7 @@ const SignupID = ({ navigation }) => {
       {profileContext.state.userCode
         ? Alert.alert(profileContext.state.userCode)
         : null}
-      <SubmitButton
-        navigation={navigation}
-        onSubmit={submitUserData}
-        toScreen="Home"
-      />
+      <SubmitButton navigation={navigation} onSubmit={submitUserData} />
     </View>
   );
 };

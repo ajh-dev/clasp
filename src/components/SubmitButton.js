@@ -8,7 +8,6 @@ const SubmitButton = ({ navigation, onSubmit, toScreen, params }) => {
       style={styles.submitButton}
       onPress={() => {
         onSubmit();
-        navigation.navigate(toScreen, params);
       }}
     >
       <Text style={styles.submitText}>continue</Text>

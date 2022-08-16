@@ -70,6 +70,14 @@ const Startup = ({ navigation }) => {
             source={require("../../assets/logo.png")}
           />
           <Text style={styles.motto}>comfortable conversations</Text>
+          <TouchableOpacity
+            style={styles.loginLinkButton}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <Text style={styles.loginLink}>
+              {"already have an account?\nlogin here"}
+            </Text>
+          </TouchableOpacity>
         </View>
         <StartupSlide
           header="ease of access"
@@ -115,6 +123,15 @@ const Startup = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
+  loginLinkButton: {
+    marginTop: 20,
+  },
+  loginLink: {
+    textAlign: "center",
+    fontFamily: "Arvo_400Regular",
+    fontSize: 20,
+    color: "#DC552C",
+  },
   signupButton: {
     padding: 10,
     borderRadius: 8,

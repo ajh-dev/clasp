@@ -10,8 +10,7 @@ const InitialLoad = ({ navigation }) => {
     if (state.token === null) {
       navigation.navigate("Startup");
     } else {
-      //FIXME: Set to home directory
-      navigation.navigate("Profile");
+      navigation.navigate("Home", { backRoute: "Startup" });
     }
   }, []);
 

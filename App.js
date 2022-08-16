@@ -13,6 +13,7 @@ import { Provider as MessageProvider } from "./src/context/messageContext";
 import { Provider as TreatmentProvider } from "./src/context/treatmentContext";
 import UserDataCollection from "./src/screens/UserDataCollection";
 import UserDataList from "./src/screens/UserDataList";
+import Login from "./src/screens/Login";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ function App() {
                 headerShown: false,
               }}
             >
+              <Stack.Screen name="Login" component={Login} />
               <Stack.Screen
                 name="UserDataCollection"
                 component={UserDataCollection}

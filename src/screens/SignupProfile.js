@@ -79,6 +79,7 @@ const SignupProfile = ({ navigation }) => {
     };
 
     profileContext.createUser(JSON.parse(JSON.stringify(data)));
+    navigation.navigate("Home", { backRoute: "SignupProfile" });
   };
 
   return (
@@ -102,14 +103,7 @@ const SignupProfile = ({ navigation }) => {
       {state.image.value ? (
         <Image source={{ uri: state.image.value }} style={styles.profilePic} />
       ) : null}
-      <SubmitButton
-        onSubmit={submitUserData}
-        navigation={navigation}
-        toScreen="Home"
-      />
-      {profileContext.state.errorMessage
-        ? Alert.alert(profileContext.state.errorMessage)
-        : null}
+      <SubmitButton onSubmit={submitUserData} navigation={navigation} />
     </View>
   );
 };
