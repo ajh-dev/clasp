@@ -1,17 +1,31 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import { AntDesign } from "@expo/vector-icons";
 import NavigationBar from "../components/NavigationBar";
 import BackButton from "../components/BackButton";
+import { Context as userContext } from "../context/userContext";
 
 const Profile = ({ navigation }) => {
   const [nameDisabled, setNameDisabled] = useState(false);
   const [conditionDisabled, setConditionDisabled] = useState(false);
   const [locationDisabled, setLocationDisabled] = useState(false);
   const [emailDisabled, setEmailDisabled] = useState(false);
+  const userBackend = useContext(userContext);
 
-  return (
+  useEffect(() => {
+    userBackend.getProfile();
+  }, []);
+
+  return Object.keys(userBackend.state.self).length >= 1 ? (
     <View style={styles.container}>
       <BackButton navigation={navigation} />
       <Text style={styles.header}>Profile</Text>
@@ -20,107 +34,44 @@ const Profile = ({ navigation }) => {
         source={require("../../assets/blank-profile.png")}
       />
       <View style={styles.fieldsContainer}>
-        <Text style={styles.fields}>
-          name:{" "}
-          {nameDisabled ? (
-            <Text style={styles.disabledText}>
-              <Text style={styles.asterisk}>*</Text>Disabled
+        {Object.entries(
+          JSON.parse(
+            JSON.stringify({ ...userBackend.state.self, __t: undefined })
+          )
+        ).map(([key, value]) => {
+          return (
+            <Text key={value} style={styles.fields}>
+              {key + ": " + value}
             </Text>
-          ) : (
-            <Text style={styles.fields}>Joe Shmo</Text>
-          )}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setNameDisabled(nameDisabled ? false : true);
-          }}
-        >
-          <AntDesign
-            name="closecircleo"
-            size={24}
-            color="white"
-            style={styles.disableButton}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.fieldsContainer}>
-        <Text style={styles.fields}>
-          health condition(s):{" "}
-          {conditionDisabled ? (
-            <Text style={styles.disabledText}>
-              <Text style={styles.asterisk}>*</Text>Disabled
-            </Text>
-          ) : (
-            <Text style={styles.fields}>cancer</Text>
-          )}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setConditionDisabled(conditionDisabled ? false : true);
-          }}
-        >
-          <AntDesign
-            name="closecircleo"
-            size={24}
-            color="white"
-            style={styles.disableButton}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.fieldsContainer}>
-        <Text style={styles.fields}>
-          location:{" "}
-          {locationDisabled ? (
-            <Text style={styles.disabledText}>
-              <Text style={styles.asterisk}>*</Text>Disabled
-            </Text>
-          ) : (
-            <Text style={styles.fields}>New Jersey</Text>
-          )}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setLocationDisabled(locationDisabled ? false : true);
-          }}
-        >
-          <AntDesign
-            name="closecircleo"
-            size={24}
-            color="white"
-            style={styles.disableButton}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.fieldsContainer}>
-        <Text style={styles.fields}>
-          email:{" "}
-          {emailDisabled ? (
-            <Text style={styles.disabledText}>
-              <Text style={styles.asterisk}>*</Text>Disabled
-            </Text>
-          ) : (
-            <Text style={styles.fields}>joeshmo@gmail.com</Text>
-          )}
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setEmailDisabled(!emailDisabled);
-          }}
-        >
-          <AntDesign
-            name="closecircleo"
-            size={24}
-            color="white"
-            style={styles.disableButton}
-          />
-        </TouchableOpacity>
+          );
+        })}
       </View>
       <NavigationBar navigation={navigation} isHome />
+    </View>
+  ) : (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="tomato" />
+      {userBackend.state.errorMessage
+        ? Alert.alert(
+            userBackend.state.errorMessage,
+            "Please try again or contact us",
+            [
+              {
+                text: "OK",
+                onPress: () => navigation.navigate(route.params.backRoute),
+              },
+            ]
+          )
+        : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
   asterisk: {
     fontFamily: "Arvo_400Regular",
     fontSize: 20,
@@ -138,7 +89,8 @@ const styles = StyleSheet.create({
   },
   fields: {
     fontFamily: "Arvo_400Regular",
-    fontSize: 20,
+    fontSize: 30,
+    marginVertical: 15,
   },
   header: {
     fontFamily: "Arvo_400Regular",
@@ -163,8 +115,7 @@ const styles = StyleSheet.create({
   fieldsContainer: {
     marginLeft: 50,
     marginTop: 25,
-    flexDirection: "row",
-    alignItems: "center",
+    flex: 1,
   },
 });
 

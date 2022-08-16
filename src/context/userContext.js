@@ -9,16 +9,19 @@ const userReducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     case "create_user":
       claspApi.defaults.headers.common["authorization"] = action.payload;
-      return { errorMessage: "", token: action.payload };
+      return { ...state, errorMessage: "", token: action.payload };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     case "create_user_id":
       claspApi.defaults.headers.common["authorization"] = action.payload.token;
       return {
+        ...state,
         errorMessage: "",
         token: action.payload.token,
         userCode: action.payload.userCode,
       };
+    case "get_profile":
+      return { ...state, self: action.payload };
     default:
       return state;
   }
@@ -29,6 +32,20 @@ const localSignin = (dispatch) => async () => {
 
   if (token) {
     dispatch({ type: "create_user", payload: token });
+  }
+};
+
+const getProfile = (dispatch) => async () => {
+  try {
+    const response = await claspApi.get("/user");
+    console.log(response.data);
+    dispatch({ type: "get_profile", payload: response.data });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: "add_error",
+      payload: "Something went wrong",
+    });
   }
 };
 
@@ -100,6 +117,13 @@ const checkLogin = (dispatch) => async (loginInfo) => {
 
 export const { Provider, Context } = createDataContext(
   userReducer,
-  { createUser, localSignin, createUserID, getUserByID, checkLogin },
-  { userCode: null, token: null, errorMessage: "" }
+  {
+    createUser,
+    localSignin,
+    createUserID,
+    getUserByID,
+    checkLogin,
+    getProfile,
+  },
+  { userCode: null, token: null, errorMessage: "", self: {} }
 );
