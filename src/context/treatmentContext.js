@@ -27,7 +27,6 @@ const loadTreatments = (dispatch) => async () => {
 };
 
 const createTreatment = (dispatch) => async (newTreatment) => {
-  console.log(Object.entries(newTreatment));
   try {
     const response = await claspApi.post("/createnewtreatment", newTreatment);
     dispatch({ type: "add_treatment", payload: response.data });

@@ -8,8 +8,8 @@ const userReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
     case "create_user":
-      claspApi.defaults.headers.common["authorization"] = action.payload.token;
-      return { errorMessage: "", token: action.payload.token };
+      claspApi.defaults.headers.common["authorization"] = action.payload;
+      return { errorMessage: "", token: action.payload };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     case "create_user_id":

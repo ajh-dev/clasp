@@ -60,7 +60,7 @@ const UserDataCollection = ({ navigation, route }) => {
           toScreen="Home"
         />
       </View>
-      <NavigationBar />
+      <NavigationBar isHome navigation={navigation} />
     </View>
   );
 };
