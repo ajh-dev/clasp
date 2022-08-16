@@ -77,7 +77,7 @@ function Home({ navigation }) {
             renderItem={({ item }) => (
               <ConversationPreview
                 navigation={navigation}
-                getUser={() => userBackend.getUserByID(item.users[0]._id)}
+                getUser={() => userBackend.getUserByID(item.users[1]._id)}
                 recentMessage={
                   item.messages.length
                     ? item.messages[0].message
@@ -106,6 +106,7 @@ function Home({ navigation }) {
         <Text style={styles.buttonText}>suggested resources</Text>
       </TouchableOpacity>
       <NavigationBar
+        isHome={false}
         navigation={navigation}
         createConversation={() => {
           messageBackend.createConversation();
@@ -116,6 +117,7 @@ function Home({ navigation }) {
   ) : (
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="tomato" />
+      {console.log(userBackend.state)}
     </View>
   );
 }

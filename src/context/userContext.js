@@ -8,8 +8,8 @@ const userReducer = (state, action) => {
     case "add_error":
       return { ...state, errorMessage: action.payload };
     case "create_user":
-      claspApi.defaults.headers.common["authorization"] = action.payload.token;
-      return { errorMessage: "", token: action.payload.token };
+      claspApi.defaults.headers.common["authorization"] = action.payload;
+      return { errorMessage: "", token: action.payload };
     case "clear_error_message":
       return { ...state, errorMessage: "" };
     case "create_user_id":
@@ -66,6 +66,7 @@ const createUserID = (dispatch) => async (userInfo) => {
     dispatch({ type: "create_user_id", payload: response.data });
     dispatch({ type: "clear_error_message" });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: "add_error",
       payload: "Something went wrong with signup",
