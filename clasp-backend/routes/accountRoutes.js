@@ -9,6 +9,16 @@ const router = express.Router();
 
 const saltRounds = 15;
 
+router.get("/user", requireAuth, async (req, res) => {
+    try {
+        User.find({_id: req.user._id}, '-_id -__v -__t -password', (err, result) => {
+            res.send(result[0])
+    })
+    } catch (err) {
+        return res.status(422).send(err.message);
+    }
+})
+
 router.post("/user", async (req, res) => {
     try{
         if(req.body.name && req.body.password){
