@@ -42,6 +42,7 @@ const UserInput = ({
           onChangeText={(newInput) => onInputChange(newInput)}
           autoCapitalize="none"
           autoCorrect={false}
+          secureTextEntry={inputName === "password"}
         />
       ) : type == "dropdown" ? (
         <RNPickerSelect

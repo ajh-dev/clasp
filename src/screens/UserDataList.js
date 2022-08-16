@@ -114,10 +114,12 @@ const UserDataList = ({ navigation }) => {
             );
           })}
           <SubmitButton
-            onSubmit={() => console.log("Treatment created")}
+            onSubmit={() =>
+              navigation.navigate("UserDataCollection", {
+                newTreatmentName: state.Name.value,
+              })
+            }
             navigation={navigation}
-            toScreen="UserDataCollection"
-            params={{ newTreatmentName: state.Name.value }}
           />
         </View>
       ) : null}

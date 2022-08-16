@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { Arvo_400Regular } from "@expo-google-fonts/arvo";
 import NavigationBar from "../components/NavigationBar";
@@ -15,7 +16,7 @@ import { Context as messageContext } from "../context/messageContext";
 import { Context as userContext } from "../context/userContext";
 import { io } from "socket.io-client";
 
-function Home({ navigation }) {
+function Home({ navigation, route }) {
   const messageBackend = useContext(messageContext);
   const userBackend = useContext(userContext);
   const [isConversationCreate, setIsConversationCreate] = useState(false);
@@ -117,7 +118,18 @@ function Home({ navigation }) {
   ) : (
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="tomato" />
-      {console.log(userBackend.state)}
+      {userBackend.state.errorMessage
+        ? Alert.alert(
+            userBackend.state.errorMessage,
+            "Please try again or contact us",
+            [
+              {
+                text: "OK",
+                onPress: () => navigation.navigate(route.params.backRoute),
+              },
+            ]
+          )
+        : null}
     </View>
   );
 }
